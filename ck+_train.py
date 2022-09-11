@@ -142,4 +142,4 @@ if __name__ == '__main__':
     args = parse()
     main(args)
     end = time.perf_counter()
-    print('Running time: {} Minutes, {} Seconds'.format((end - start) // 60, (end - start) % 60))
+    print('Running time: {:.2f} Minutes, {:.2f} Seconds'.format((end - start) // 60, (end - start) % 60))

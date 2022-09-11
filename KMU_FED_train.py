@@ -17,7 +17,7 @@ from utils import read_split_data, train_one_epoch, evaluate, plot_accuracy
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument('--num_classes', type=int, default=6)
-    parser.add_argument('--epochs', type=int, default=20)
+    parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--lrf', type=float, default=0.1)
@@ -137,7 +137,7 @@ def main(args):
         tb_writer.add_scalar(tags[2], optimizer.param_groups[0]["lr"], epoch)
 
         torch.save(model.state_dict(), "./weights/model-{}.pth".format(epoch))
-    plot_accuracy(args.epochs, total_accuracy_train, total_accuracy_val, "GhostNet_KMU_FED_Modified")
+    plot_accuracy(args.epochs, total_accuracy_train, total_accuracy_val, "GhostNet_KMU_FED_Origin")
 
 
 if __name__ == '__main__':
@@ -145,4 +145,4 @@ if __name__ == '__main__':
     args = parse()
     main(args)
     end = time.perf_counter()
-    print('Running time: {} Minutes, {} Seconds'.format((end - start) // 60, (end - start) % 60))
+    print('Running time: {:.2f} Minutes, {:.2f} Seconds'.format((end - start) // 60, (end - start) % 60))
