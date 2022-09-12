@@ -11,8 +11,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 
-__all__ = ['ghost_net']
-
 
 def _make_divisible(v, divisor, min_value=None):
     """
@@ -162,6 +160,7 @@ class GhostBottleneck(nn.Module):
 
 class GhostNet(nn.Module):
     def __init__(self, cfgs, input_channel, num_classes=1000, width=1.0, dropout=0.2):
+        global exp_size
         super(GhostNet, self).__init__()
         # setting of inverted residual blocks
         self.cfgs = cfgs
@@ -198,9 +197,10 @@ class GhostNet(nn.Module):
         self.global_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.conv_head = nn.Conv2d(input_channel, output_channel, 1, 1, 0, bias=True)
         self.act2 = nn.ReLU(inplace=True)
-        self.classifier = nn.Linear(output_channel, num_classes)
-        # self.classifier = nn.Conv2d(output_channel, num_classes, 1)
-        # self.flt = nn.Flatten()
+        # self.classifier = nn.Linear(output_channel, num_classes)
+        self.classifier = nn.Conv2d(output_channel, num_classes, 1)
+        self.aap = nn.AdaptiveAvgPool2d(output_size=(1, 1))
+        self.flt = nn.Flatten()
 
     def forward(self, x):
         x = self.conv_stem(x)
@@ -212,11 +212,12 @@ class GhostNet(nn.Module):
         x = self.act2(x)
         # print(x.shape)
         # exit()
-        x = x.view(x.size(0), -1)
+        # x = x.view(x.size(0), -1)
         if self.dropout > 0.:
             x = F.dropout(x, p=self.dropout, training=self.training)
         x = self.classifier(x)
-        # x = self.flt(x)
+        x = self.aap(x)
+        x = self.flt(x)
         return x
 
 
