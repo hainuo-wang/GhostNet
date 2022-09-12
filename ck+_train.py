@@ -134,7 +134,7 @@ def main(args):
         tb_writer.add_scalar(tags[2], optimizer.param_groups[0]["lr"], epoch)
 
         torch.save(model.state_dict(), "./weights/model-{}.pth".format(epoch))
-    plot_accuracy(args.epochs, total_accuracy_train, total_accuracy_val, "GhostNet_CK+_Modified")
+    plot_accuracy(args.epochs, total_accuracy_train, total_accuracy_val, "GhostNet_CK+_Origin")
 
 
 if __name__ == '__main__':
