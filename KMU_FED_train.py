@@ -21,7 +21,7 @@ def parse():
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--lr', type=float, default=0.01)
     parser.add_argument('--lrf', type=float, default=0.1)
-    parser.add_argument('--data-path', type=str, default="KMU-FED")
+    parser.add_argument('--data-path', type=str, default="../data/KMU-FED")
     parser.add_argument('--input_channel', type=int, default=3)
     parser.add_argument('--weights', type=str, default='models/state_dict_73.98.pth',
                         help='initial weights path')
