@@ -19,14 +19,21 @@ import matplotlib.pyplot as plt
 
 def read_split_data(root: str, val_rate: float = 0.2):
     random.seed(0)  # 保证随机结果可复现
+    # 判断目录是否存在
     assert os.path.exists(root), "dataset root: {} does not exist.".format(root)
 
     # 遍历文件夹，一个文件夹对应一个类别
+    # os.listdir()方法用于返回指定的文件夹包含的文件或文件夹的名字的列表
+    # 使用os.path.isdir()函数判断某一路径是否为目录
+    # os.path.join()函数用于路径拼接文件路径，可以传入多个路径
     flower_class = [cla for cla in os.listdir(root) if os.path.isdir(os.path.join(root, cla))]
     # 排序，保证顺序一致
-    flower_class.sort()
+    flower_class.sort()  # label
     # 生成类别名称以及对应的数字索引
+    # enumerate()函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标
     class_indices = dict((k, v) for v, k in enumerate(flower_class))
+    # json.dumps将一个Python数据结构转换为JSON
+    # indent = 4，缩进4个空格
     json_str = json.dumps(dict((val, key) for key, val in class_indices.items()), indent=4)
     with open('class_indices.json', 'w') as json_file:
         json_file.write(json_str)
@@ -39,6 +46,7 @@ def read_split_data(root: str, val_rate: float = 0.2):
     supported = [".jpg", ".JPG", ".png", ".PNG"]  # 支持的文件后缀类型
     # 遍历每个文件夹下的文件
     for cla in flower_class:
+        # 得到每张图片的路径
         cla_path = os.path.join(root, cla)
         # 遍历获取supported支持的所有文件路径
         images = [os.path.join(root, cla, i) for i in os.listdir(cla_path)
