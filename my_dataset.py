@@ -8,13 +8,13 @@ class MyDataSetRGB(Dataset):
 
     def __init__(self, images_path: list, images_class: list, transform=None):
         self.images_path = images_path
-        self.images_class = images_class
+        self.images_class = images_class  # label
         self.transform = transform
 
     def __len__(self):
         return len(self.images_path)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item):  # item是index
         img = Image.open(self.images_path[item])
         # RGB为彩色图片，L为灰度图片
         if img.mode != 'RGB':
